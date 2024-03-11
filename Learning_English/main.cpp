@@ -40,7 +40,7 @@ int main(int argc, const char * argv[]) {
     int num = int(wordlist.size());
     default_random_engine e;
     uniform_int_distribution<int> u(0,num-1); // 左闭右闭区间
-    e.seed(time(0));
+    e.seed(int(time(0)));
     int cnt = 0;
     
     for(int i=0;;i++){
@@ -53,10 +53,19 @@ int main(int argc, const char * argv[]) {
             cout<<"-----------------------"<<endl;
             cout<<wordlist[idx].Chinese<<endl;
             string input;
+            bool spell_wrong = false;
             while(true){
                 cin>>input;
-                if(input != wordlist[idx].English) cout<<"拼写错误！重试: ";
+                if(input != wordlist[idx].English){
+                    cout<<"拼写错误！重试: ";
+                    spell_wrong = true;
+                }
                 else break;
+            }
+            //一次拼写错误，重新加入单词表
+            if(spell_wrong){
+                wordlist[idx].spelled = false;
+                cnt--;
             }
         }
     }
